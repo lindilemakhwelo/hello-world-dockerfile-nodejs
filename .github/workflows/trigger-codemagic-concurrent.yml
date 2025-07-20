@@ -16,48 +16,60 @@ jobs:
       - name: Checkout repository (optional, if you need files from repo)
         uses: actions/checkout@v4
 
-      - name: Send Webhook Trigger 1 to Codemagic (Simplified Payload)
+      - name: Send Webhook Trigger 1 to Codemagic (via REST API)
         id: trigger_1
         run: |
-          echo "Triggering Codemagic build 1 for workflow: my-npm-workflow (simplified payload)"
+          echo "Triggering Codemagic build 1 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
+            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \ # AUTHENTICATION HEADER
             -d '{
-              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
+              "appId": "687d20ef26b4bb16b4fb07bf",       # <<< YOUR CODEMAGIC APP ID
+              "workflowId": "default-workflow",         # <<< YOUR CODEMAGIC WORKFLOW ID
+              "branch": "main",                         # <<< The branch to build
+              "message": "Triggered by GA Manual Test - Build 1" # Custom message for Codemagic build history
             }' \
-            "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
+            "https://api.codemagic.io/builds" # <<< REST API ENDPOINT
         env:
-          CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
+          CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }} # Make secret available
 
-      - name: Send Webhook Trigger 2 to Codemagic (Simplified Payload)
+      - name: Send Webhook Trigger 2 to Codemagic (via REST API)
         id: trigger_2
         run: |
           echo "Waiting 5 seconds before triggering build 2..."
           sleep 5
-          echo "Triggering Codemagic build 2 for workflow: my-npm-workflow (simplified payload)"
+          echo "Triggering Codemagic build 2 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
+            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
             -d '{
-              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
+              "appId": "687d20ef26b4bb16b4fb07bf",
+              "workflowId": "default-workflow",
+              "branch": "main",
+              "message": "Triggered by GA Manual Test - Build 2"
             }' \
-            "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
+            "https://api.codemagic.io/builds"
         env:
-          CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
+          CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }}
 
-      - name: Send Webhook Trigger 3 to Codemagic (Simplified Payload)
+      - name: Send Webhook Trigger 3 to Codemagic (via REST API)
         id: trigger_3
         run: |
           echo "Waiting 5 seconds before triggering build 3..."
           sleep 5
-          echo "Triggering Codemagic build 3 for workflow: my-npm-workflow (simplified payload)"
+          echo "Triggering Codemagic build 3 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
+            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
             -d '{
-              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
+              "appId": "687d20ef26b4bb16b4fb07bf",
+              "workflowId": "default-workflow",
+              "branch": "main",
+              "message": "Triggered by GA Manual Test - Build 3"
             }' \
-            "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
+            "https://api.codemagic.io/builds"
         env:
-          CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
+          CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }}
 
       - name: Log all triggers sent
         run: |
