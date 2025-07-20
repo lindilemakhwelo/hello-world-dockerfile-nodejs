@@ -1,5 +1,3 @@
-# .github/workflows/trigger-codemagic-concurrent.yml
-
 name: Trigger Concurrent Codemagic Builds
 
 on:
@@ -22,16 +20,16 @@ jobs:
           echo "Triggering Codemagic build 1 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
-            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \ # AUTHENTICATION HEADER
+            -H "x-auth-token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
             -d '{
-              "appId": "687d20ef26b4bb16b4fb07bf",       # <<< YOUR CODEMAGIC APP ID
-              "workflowId": "default-workflow",         # <<< YOUR CODEMAGIC WORKFLOW ID
-              "branch": "main",                         # <<< The branch to build
-              "message": "Triggered by GA Manual Test - Build 1" # Custom message for Codemagic build history
+              "appId": "687d20ef26b4bb16b4fb07bf",
+              "workflowId": "default-workflow",
+              "branch": "main",
+              "message": "Triggered by GA Manual Test - Build 1"
             }' \
-            "https://api.codemagic.io/builds" # <<< REST API ENDPOINT
+            "https://api.codemagic.io/builds"
         env:
-          CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }} # Make secret available
+          CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }}
 
       - name: Send Webhook Trigger 2 to Codemagic (via REST API)
         id: trigger_2
@@ -41,7 +39,7 @@ jobs:
           echo "Triggering Codemagic build 2 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
-            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
+            -H "x-auth-token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
             -d '{
               "appId": "687d20ef26b4bb16b4fb07bf",
               "workflowId": "default-workflow",
@@ -60,7 +58,7 @@ jobs:
           echo "Triggering Codemagic build 3 for workflow: default-workflow (via REST API)"
           curl -X POST \
             -H "Content-Type: application/json" \
-            -H "X-Auth-Token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
+            -H "x-auth-token: ${{ secrets.CODEMAGIC_API_TOKEN }}" \
             -d '{
               "appId": "687d20ef26b4bb16b4fb07bf",
               "workflowId": "default-workflow",
