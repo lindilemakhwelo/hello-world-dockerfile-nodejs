@@ -2,79 +2,58 @@
 
 name: Trigger Concurrent Codemagic Builds
 
-# This workflow is triggered on a schedule.
-# The cron expression '0 0-23/2 * * *' means:
-# - At minute 0 (the top of the hour)
-# - Every 2nd hour (00, 02, 04, ..., 22)
-# - Every day of the month, every month, every day of the week.
-# IMPORTANT: GitHub Actions schedules run in UTC. Adjust this cron expression
-# if your desired local times (e.g., 22:00 SAST) need to be converted to UTC.
-# For example, if 22:00 SAST is 20:00 UTC, the cron would be '0 20-23/2,0-19/2 * * *'
 on:
   # schedule:
   #   - cron: '0 0-23/2 * * *' # Commented out for manual testing
 
-  # This allows you to manually trigger the workflow from the GitHub Actions tab in your repository.
   workflow_dispatch:
 
 jobs:
   trigger_builds:
-    runs-on: ubuntu-latest # Using a Linux runner, which is cost-effective (1x minute rate)
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository (optional, if you need files from repo)
-        # Not strictly necessary for just sending webhooks, but good practice
-        # if you ever expand this workflow to read dynamic data from your repo.
         uses: actions/checkout@v4
 
-      - name: Send Webhook Trigger 1 to Codemagic
-        id: trigger_1 # Assign an ID to this step
+      - name: Send Webhook Trigger 1 to Codemagic (Simplified Payload)
+        id: trigger_1
         run: |
-          echo "Triggering Codemagic build 1 for workflow: my-npm-workflow"
+          echo "Triggering Codemagic build 1 for workflow: my-npm-workflow (simplified payload)"
           curl -X POST \
             -H "Content-Type: application/json" \
             -d '{
-              "workflowId": "my-npm-workflow", # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
-              "branch": "main",                 # Specify the branch Codemagic should build
-              "message": "Triggered by GA Manual Test - Build 1" # Custom message for Codemagic build history
-            }' \
-            "${{ secrets.CODEMAGIC_WEBHOOK_URL }}" # Using the GitHub Secret for security
-        env:
-          # Make the secret available as an environment variable for this step
-          CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
-
-      - name: Send Webhook Trigger 2 to Codemagic
-        id: trigger_2
-        # Add a small delay to ensure Codemagic processes triggers distinctly.
-        # This helps avoid potential bundling or rate-limiting issues if requests arrive too fast.
-        run: |
-          echo "Waiting 5 seconds before triggering build 2..."
-          sleep 5
-          echo "Triggering Codemagic build 2 for workflow: my-npm-workflow"
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{
-              "workflowId": "my-npm-workflow", # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
-              "branch": "main",
-              "message": "Triggered by GA Manual Test - Build 2"
+              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
             }' \
             "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
         env:
           CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
 
-      - name: Send Webhook Trigger 3 to Codemagic
-        id: trigger_3
-        # Another small delay
+      - name: Send Webhook Trigger 2 to Codemagic (Simplified Payload)
+        id: trigger_2
         run: |
-          echo "Waiting 5 seconds before triggering build 3..."
+          echo "Waiting 5 seconds before triggering build 2..."
           sleep 5
-          echo "Triggering Codemagic build 3 for workflow: my-npm-workflow"
+          echo "Triggering Codemagic build 2 for workflow: my-npm-workflow (simplified payload)"
           curl -X POST \
             -H "Content-Type: application/json" \
             -d '{
-              "workflowId": "my-npm-workflow", # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
-              "branch": "main",
-              "message": "Triggered by GA Manual Test - Build 3"
+              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
+            }' \
+            "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
+        env:
+          CODEMAGIC_WEBHOOK_URL: ${{ secrets.CODEMAGIC_WEBHOOK_URL }}
+
+      - name: Send Webhook Trigger 3 to Codemagic (Simplified Payload)
+        id: trigger_3
+        run: |
+          echo "Waiting 5 seconds before triggering build 3..."
+          sleep 5
+          echo "Triggering Codemagic build 3 for workflow: my-npm-workflow (simplified payload)"
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "workflowId": "my-npm-workflow" # <<< IMPORTANT: REPLACE WITH YOUR ACTUAL CODEMAGIC WORKFLOW ID
             }' \
             "${{ secrets.CODEMAGIC_WEBHOOK_URL }}"
         env:
